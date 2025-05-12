@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "305126730953",
+    "project_id": "sstm-8a0da",
+    "storage_bucket": "sstm-8a0da.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305126730953:android:e91e1ab114615aea89f118",
+        "android_client_info": {
+          "package_name": "com.example.sstmapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGsTYuq9WHJKQJptXUQKW4v1yPViAunCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
