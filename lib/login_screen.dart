@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sstmapp/token.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,26 +18,47 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   bool _obscurePassword = true;
   String _errorMessage = ''; // For error message display
-  final FirebaseAuth _auth = FirebaseAuth.instance;  // Firebase instance
+  // final FirebaseAuth _auth = FirebaseAuth.instance;  // Firebase instance
 
   Future<void> _login() async {
-    try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+  final String email = emailController.text.trim();
+  final String password = passwordController.text.trim();
+
+  final url = Uri.parse("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCGsTYuq9WHJKQJptXUQKW4v1yPViAunCM");
+
+  try {
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "email": email,
+        "password": password,
+        "returnSecureToken": true,
+      }),
+    );
+
+    final responseData = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      // Login successful, navigate to the next screen
       setState(() {
-        _errorMessage = '';  // Clear error message on successful login
+        _errorMessage = '';
       });
       Navigator.push(context, MaterialPageRoute(
-            builder: (_) => TokenQrScreen(),
-          ),);  // Then navigate
-    } on FirebaseAuthException catch (e) {
+        builder: (_) => TokenQrScreen(),
+      ));
+    } else {
+      // Handle error
       setState(() {
-        _errorMessage = e.message ?? 'Login failed. Please try again.';
+        _errorMessage = responseData['error']['message'] ?? 'Login failed. Please try again.';
       });
     }
+  } catch (e) {
+    setState(() {
+      _errorMessage = 'An error occurred. Please try again.';
+    });
   }
+}
 
 
   @override
