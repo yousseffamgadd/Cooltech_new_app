@@ -148,7 +148,7 @@ Future<void> _loadSensors() async {
 
       clientAttributes.forEach((key, value) {
         if (value != 'nan') {
-          final match = RegExp(r'([A-Za-z]+\d*)(Mac|Timer)').firstMatch(key);
+          final match = RegExp(r'([A-Za-z]+\d*)(MAC|Timer)').firstMatch(key);
 
           if (match != null) {
             final sensorName = match.group(1)!; // e.g., Temp1 or Door1
@@ -156,7 +156,7 @@ Future<void> _loadSensors() async {
 
             tempSensors.putIfAbsent(sensorName, () => {});
 
-            if (attributeType == 'Mac') {
+            if (attributeType == 'MAC') {
               tempSensors[sensorName]!['mac'] = value;
               tempSensors[sensorName]!['key'] = key;
             } else if (attributeType == 'Timer') {
@@ -550,7 +550,7 @@ List<Widget> buildDialogActions({
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
   for (int i = 0; i < 6; i++) ...[
-    Container(
+    SizedBox(
       width: 31.w, // responsive width
       child: TextField(
         controller: controllers[i],
@@ -911,7 +911,7 @@ List<Widget> buildDialogActions({
         }();
 
   final payload = {
-    '${key}Mac': mac,
+    '${key}MAC': mac,
     '${key}Timer': interval,
   };
 
@@ -1013,7 +1013,7 @@ Widget _buildIntervalSlider({
           thumbColor: const Color.fromARGB(255, 42, 62, 173),
           overlayColor: const Color.fromARGB(255, 42, 62, 173).withAlpha(32),
         ),
-        child: Container(
+        child: SizedBox(
           width: 280.w, // Responsive width for slider container
           child: Slider(
             value: interval.toDouble(),
